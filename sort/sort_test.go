@@ -41,3 +41,8 @@ func TestSelectSort(t *testing.T) {
 	valid := validateMax(arr)
 	assert.Equal(t, true, valid)
 }
+
+func TestQuickSort(t *testing.T) {
+	a := []int{83, 90, 29, 82, 49, 21, 68, 9, 71, 6, 1, 85, 89}
+	QuickSort(a)
+}
