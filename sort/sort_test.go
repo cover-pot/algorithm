@@ -14,7 +14,8 @@ var (
 )
 
 func init() {
-	rand.Seed(time.Now().Unix())
+	//rand.Seed(time.Now().Unix())
+	rand.NewSource(time.Now().Unix())
 	length = rand.Intn(26)
 	arr = make([]int, length)
 	for i := 0; i < len(arr); i++ {
