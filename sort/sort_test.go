@@ -34,6 +34,16 @@ func validateMax(arr []int) bool {
 	return true
 }
 
+func validateMin(arr []int) bool {
+	for i := 0; i < len(arr)-1; i++ {
+		if arr[i] > arr[i+1] {
+			return false
+		}
+	}
+
+	return true
+}
+
 func TestSelectSort(t *testing.T) {
 
 	SelectSort(arr)
@@ -43,6 +53,15 @@ func TestSelectSort(t *testing.T) {
 }
 
 func TestQuickSort(t *testing.T) {
-	a := []int{83, 90, 29, 82, 49, 21, 68, 9, 71, 6, 1, 85, 89}
-	QuickSort(a)
+	QuickSort(arr)
+	log.Printf("TestQuickSort res: \n %v\n", arr)
+	valid := validateMin(arr)
+	assert.Equal(t, true, valid)
+}
+
+func TestBubbleSort(t *testing.T) {
+	BubbleSort(arr)
+	log.Printf("TestBubbleSort res: \n %v\n", arr)
+	valid := validateMax(arr)
+	assert.Equal(t, true, valid)
 }
