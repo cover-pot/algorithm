@@ -58,3 +58,56 @@ func PostorderTraversal(root *tree.TreeNode) []int {
 	postorderHelp(root)
 	return res
 }
+
+// CheckTree 2236. Root Equals Sum of Children
+func CheckTree(root *tree.TreeNode) bool {
+	return root.Val == root.Left.Val+root.Right.Val
+}
+
+// RangeSumBST 938. Range Sum of BST
+func RangeSumBST(root *tree.TreeNode, low int, high int) int {
+	//var inorderSum func(*tree.TreeNode, int, int)
+	//
+	//sum := 0
+	//inorderSum = func(node *tree.TreeNode, low int, high int) {
+	//	if node == nil {
+	//		return
+	//	}
+	//
+	//	inorderSum(node.Left, low, high)
+	//
+	//	if node.Val >= low && node.Val <= high {
+	//		sum += node.Val
+	//	}
+	//
+	//	inorderSum(node.Right, low, high)
+	//}
+	//
+	//inorderSum(root, low, high)
+	//
+	//return sum
+
+	// optimal solution
+	if root == nil {
+		return 0
+	}
+
+	var sum = 0
+
+	if root.Val >= low && root.Val <= high {
+		sum += root.Val
+	}
+
+	l := 0
+	r := 0
+
+	if low <= root.Val {
+		l = RangeSumBST(root.Left, low, high)
+	}
+
+	if high >= root.Val {
+		r = RangeSumBST(root.Right, low, high)
+	}
+
+	return sum + l + r
+}

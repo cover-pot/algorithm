@@ -14,7 +14,8 @@ var (
 )
 
 func init() {
-	rand.Seed(time.Now().Unix())
+	//rand.Seed(time.Now().Unix())
+	rand.NewSource(time.Now().Unix())
 	length = rand.Intn(26)
 	arr = make([]int, length)
 	for i := 0; i < len(arr); i++ {
@@ -39,4 +40,9 @@ func TestSelectSort(t *testing.T) {
 	log.Printf("TestSelectSort res: \n %v\n", arr)
 	valid := validateMax(arr)
 	assert.Equal(t, true, valid)
+}
+
+func TestQuickSort(t *testing.T) {
+	a := []int{83, 90, 29, 82, 49, 21, 68, 9, 71, 6, 1, 85, 89}
+	QuickSort(a)
 }
