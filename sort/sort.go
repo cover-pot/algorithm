@@ -49,8 +49,47 @@ func MergeSort(arr []int) {
 }
 
 // HeapSort heap
+// parent index = (i - 1 / 2)
+// left child = 2 * i + 1
+// right child = 2 * i + 2
 func HeapSort(arr []int) {
 
+	// build heap
+	heapInsert := func(arr []int, i int) {
+		for i > 0 {
+			if arr[i] > arr[(i-1)/2] {
+				swap(arr, i, (i-1)/2)
+				i = (i - 1) / 2
+			} else {
+				break
+			}
+		}
+	}
+
+	heapify := func(arr []int, i, k int) {
+		for i < k && 2*i+1 < k {
+			// max(left child, right child)
+			maxIndex := 2*i + 1
+			if 2*i+2 < k && arr[2*i+1] < arr[2*i+2] {
+				maxIndex++
+			}
+			if arr[i] < arr[maxIndex] {
+				swap(arr, i, maxIndex)
+				i = maxIndex
+			} else {
+				break
+			}
+		}
+	}
+
+	for i := 0; i < len(arr); i++ {
+		heapInsert(arr, i)
+	}
+
+	for i := len(arr) - 1; i > 0; i-- {
+		swap(arr, 0, i)
+		heapify(arr, 0, i)
+	}
 }
 
 // QuickSort quick

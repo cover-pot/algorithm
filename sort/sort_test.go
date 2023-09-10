@@ -68,7 +68,14 @@ func TestBubbleSort(t *testing.T) {
 
 func TestInsertionSort(t *testing.T) {
 	InsertionSort(arr)
-	log.Printf("TestBubbleSort res: \n %v\n", arr)
+	log.Printf("TestInsertionSort res: \n %v\n", arr)
+	valid := validateMin(arr)
+	assert.Equal(t, true, valid)
+}
+
+func TestHeapSort(t *testing.T) {
+	HeapSort(arr)
+	log.Printf("TestHeapSort res: \n %v\n", arr)
 	valid := validateMin(arr)
 	assert.Equal(t, true, valid)
 }
