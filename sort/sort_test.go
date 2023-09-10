@@ -1,8 +1,8 @@
 package sort
 
 import (
+	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
-	"log"
 	"math/rand"
 	"testing"
 	"time"
@@ -14,7 +14,7 @@ var (
 )
 
 func init() {
-	//rand.Seed(time.Now().Unix())
+	log.SetFormatter(&log.TextFormatter{})
 	rand.NewSource(time.Now().Unix())
 	length = rand.Intn(26)
 	arr = make([]int, length)
@@ -63,5 +63,12 @@ func TestBubbleSort(t *testing.T) {
 	BubbleSort(arr)
 	log.Printf("TestBubbleSort res: \n %v\n", arr)
 	valid := validateMax(arr)
+	assert.Equal(t, true, valid)
+}
+
+func TestInsertionSort(t *testing.T) {
+	InsertionSort(arr)
+	log.Printf("TestBubbleSort res: \n %v\n", arr)
+	valid := validateMin(arr)
 	assert.Equal(t, true, valid)
 }

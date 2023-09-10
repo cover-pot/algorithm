@@ -30,9 +30,17 @@ func BubbleSort(arr []int) {
 	}
 }
 
-// InsertSort sort by insert
-func InsertSort(arr []int) {
-
+// InsertionSort sort by insert
+func InsertionSort(arr []int) {
+	for i := 0; i < len(arr); i++ {
+		for j := i; j > 0; j-- {
+			if arr[j] < arr[j-1] {
+				swap(arr, j, j-1)
+			} else {
+				break
+			}
+		}
+	}
 }
 
 // MergeSort merge
