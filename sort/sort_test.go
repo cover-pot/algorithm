@@ -1,8 +1,8 @@
 package sort
 
 import (
+	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
-	"log"
 	"math/rand"
 	"testing"
 	"time"
@@ -14,7 +14,7 @@ var (
 )
 
 func init() {
-	//rand.Seed(time.Now().Unix())
+	log.SetFormatter(&log.TextFormatter{})
 	rand.NewSource(time.Now().Unix())
 	length = rand.Intn(26)
 	arr = make([]int, length)
@@ -34,6 +34,16 @@ func validateMax(arr []int) bool {
 	return true
 }
 
+func validateMin(arr []int) bool {
+	for i := 0; i < len(arr)-1; i++ {
+		if arr[i] > arr[i+1] {
+			return false
+		}
+	}
+
+	return true
+}
+
 func TestSelectSort(t *testing.T) {
 
 	SelectSort(arr)
@@ -43,6 +53,29 @@ func TestSelectSort(t *testing.T) {
 }
 
 func TestQuickSort(t *testing.T) {
-	a := []int{83, 90, 29, 82, 49, 21, 68, 9, 71, 6, 1, 85, 89}
-	QuickSort(a)
+	QuickSort(arr)
+	log.Printf("TestQuickSort res: \n %v\n", arr)
+	valid := validateMin(arr)
+	assert.Equal(t, true, valid)
+}
+
+func TestBubbleSort(t *testing.T) {
+	BubbleSort(arr)
+	log.Printf("TestBubbleSort res: \n %v\n", arr)
+	valid := validateMax(arr)
+	assert.Equal(t, true, valid)
+}
+
+func TestInsertionSort(t *testing.T) {
+	InsertionSort(arr)
+	log.Printf("TestInsertionSort res: \n %v\n", arr)
+	valid := validateMin(arr)
+	assert.Equal(t, true, valid)
+}
+
+func TestHeapSort(t *testing.T) {
+	HeapSort(arr)
+	log.Printf("TestHeapSort res: \n %v\n", arr)
+	valid := validateMin(arr)
+	assert.Equal(t, true, valid)
 }
