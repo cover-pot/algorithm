@@ -79,3 +79,10 @@ func TestHeapSort(t *testing.T) {
 	valid := validateMin(arr)
 	assert.Equal(t, true, valid)
 }
+
+func TestMergeSort(t *testing.T) {
+	MergeSort(arr)
+	log.Printf("TestMergeSort res: \n %v\n", arr)
+	valid := validateMin(arr)
+	assert.Equal(t, true, valid)
+}

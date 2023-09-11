@@ -46,6 +46,53 @@ func InsertionSort(arr []int) {
 // MergeSort merge
 func MergeSort(arr []int) {
 
+	// 原数组拷贝
+	temp := make([]int, 0, len(arr))
+	for _, v := range arr {
+		temp = append(temp, v)
+	}
+
+	mergeSort(arr, temp, 0, len(arr)-1)
+}
+
+func mergeSort(arr, temp []int, l, r int) {
+	if l >= r {
+		return
+	}
+
+	// 找中间位置
+	mid := l + (r-l)/2
+	// 左半部分排序
+	mergeSort(arr, temp, l, mid)
+	// 右半部分排序
+	mergeSort(arr, temp, mid+1, r)
+
+	// 将arr[l, mid] 和arr[mid + 1, r] 合并
+	if arr[mid] > arr[mid+1] {
+		merge(arr, temp, l, r, mid)
+	}
+}
+
+func merge(arr, temp []int, l, r, mid int) {
+	for i := 0; i < r-l+1; i++ {
+		temp[l+i] = arr[l+i]
+	}
+	i, j := l, mid+1
+	for k := l; k <= r; k++ {
+		if i > mid {
+			arr[k] = temp[j]
+			k++
+		} else if j > r {
+			arr[k] = temp[i]
+			i++
+		} else if temp[i] <= temp[j] {
+			arr[k] = temp[i]
+			i++
+		} else {
+			arr[k] = temp[j]
+			j++
+		}
+	}
 }
 
 // HeapSort heap
