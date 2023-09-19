@@ -2,6 +2,7 @@ package september
 
 import (
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -16,4 +17,11 @@ func TestKWeakestRows(t *testing.T) {
 	}
 	res := KWeakestRows(mat, 3)
 	fmt.Println(res)
+}
+
+func TestFindDuplicate(t *testing.T) {
+	nums := []int{3, 1, 3, 4, 2}
+
+	res := FindDuplicate(nums)
+	assert.Equal(t, res, 3)
 }

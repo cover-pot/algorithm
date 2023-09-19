@@ -35,3 +35,45 @@ func KWeakestRows(mat [][]int, k int) []int {
 
 	return res[:k]
 }
+
+// FindDuplicate 给定一个包含 n + 1 个整数的数组 nums ，其数字都在 [1, n] 范围内（包括 1 和 n），可知至少存在一个重复的整数。
+//
+// 假设 nums 只有 一个重复的整数 ，返回 这个重复的数 。
+//
+// 你设计的解决方案必须 不修改 数组 nums 且只用常量级 O(1) 的额外空间。
+// 9.19   287
+// solution：
+// 第一次遇到x将其放到索引x处
+// 第二次遇到x时 一定有索引x处的值和x相等 即arr[x] = x 此时直接返回
+// step 1: if nums[i] == i 已经正确归位 继续往下走
+// step 2: 如果当前位置的值：nums[i] 和索引为nums[i] 处的值相等： 即nums[i] == nums[nums[i]] 那么代表这个元素重复 直接返回 nums[i]
+// step 3: 交换索引i处的值 和索引i的值为索引处的值 即 swap(nums[i], nums[nums[i]])
+func FindDuplicate(nums []int) int {
+	//m := make(map[int]struct{})
+	//
+	//for _, num := range nums {
+	//	if _, ok := m[num]; ok {
+	//		return num
+	//	} else {
+	//		m[num] = struct{}{}
+	//	}
+	//}
+	//return -1
+
+	idx := 0
+	for idx < len(nums) {
+		for nums[idx] == idx {
+			idx++
+			continue
+		}
+		if nums[nums[idx]] == nums[idx] {
+			return nums[idx]
+		}
+
+		tmp := nums[idx]
+		nums[idx] = nums[tmp]
+		nums[tmp] = tmp
+	}
+
+	return -1
+}
