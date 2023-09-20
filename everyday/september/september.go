@@ -77,3 +77,51 @@ func FindDuplicate(nums []int) int {
 
 	return -1
 }
+
+// MinOperations 给你一个整数数组 nums 和一个整数 x 。每一次操作时，你应当移除数组 nums 最左边或最右边的元素，然后从 x 中减去该元素的值。请注意，需要 修改 数组以供接下来的操作使用。
+//
+// 如果可以将 x 恰好 减到 0 ，返回 最小操作数 ；否则，返回 -1
+// 9.20 1658
+func MinOperations(nums []int, x int) int {
+
+	min := func(x, y int) int {
+		if x < y {
+			return x
+		}
+		return y
+	}
+
+	l := len(nums)
+	sum := 0
+
+	for _, num := range nums {
+		sum += num
+	}
+
+	if sum < x {
+		return -1
+	}
+
+	right := 0
+	lsum := 0
+	rsum := sum
+	ans := l + 1
+	for left := -1; left < l; left++ {
+		if left != -1 {
+			lsum += nums[left]
+		}
+
+		for right < l && lsum+rsum > x {
+			rsum -= nums[right]
+			right++
+		}
+		if lsum+rsum == x {
+			ans = min(ans, (left+1)+(l-right))
+		}
+
+	}
+	if ans > l {
+		return -1
+	}
+	return ans
+}
