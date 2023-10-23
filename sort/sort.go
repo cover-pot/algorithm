@@ -49,7 +49,7 @@ func MergeSort(arr []int) {
 }
 
 // HeapSort heap
-// parent index = (i - 1 / 2)
+// parent index = (i - 1） / 2
 // left child = 2 * i + 1
 // right child = 2 * i + 2
 func HeapSort(arr []int) {
