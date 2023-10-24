@@ -45,50 +45,84 @@ func InsertionSort(arr []int) {
 
 // MergeSort merge
 func MergeSort(arr []int) {
+	var merge func(l, mid, r int, arr []int)
+	var mergeSort func(l, r int, arr []int)
 
+	merge = func(l, mid, r int, arr []int) {
+		tmp := arr[l : r+1]
+
+		i, j := l, mid+1
+
+		// 每轮循环为arr[k]赋值
+		for k := l; k <= r; k++ {
+			// 左边越界
+			if i > mid {
+				arr[k] = tmp[j-l]
+				j++
+			} else if j > r { //右边越界
+				arr[k] = tmp[i-l]
+				i++
+			} else if tmp[i-l] < tmp[j-l] { // 左边的值小
+				arr[k] = tmp[i-l]
+				i++
+			} else {
+				arr[k] = tmp[j-l]
+				j++
+			}
+		}
+
+	}
+
+	mergeSort = func(l, r int, arr []int) {
+		if l >= r {
+			return
+		}
+		mid := l + (r-l)/2
+
+		mergeSort(l, mid, arr)
+		mergeSort(mid+1, r, arr)
+		merge(l, mid, r, arr)
+
+	}
+
+	mergeSort(0, len(arr)-1, arr)
 }
 
 // HeapSort heap
-// parent index = (i - 1 / 2)
+// parent index = (i - 1） / 2
 // left child = 2 * i + 1
 // right child = 2 * i + 2
 func HeapSort(arr []int) {
 
-	// build heap
-	heapInsert := func(arr []int, i int) {
-		for i > 0 {
-			if arr[i] > arr[(i-1)/2] {
-				swap(arr, i, (i-1)/2)
-				i = (i - 1) / 2
+	if len(arr) < 2 {
+		return
+	}
+
+	siftDown := func(k, n int, arr []int) {
+		for 2*k+1 < n {
+			j := 2*k + 1
+			if j+1 < n && arr[j] > arr[j+1] {
+				j++
+			}
+
+			if arr[k] > arr[j] {
+				swap(arr, k, j)
+				k = j
 			} else {
 				break
 			}
 		}
 	}
 
-	heapify := func(arr []int, i, k int) {
-		for i < k && 2*i+1 < k {
-			// max(left child, right child)
-			maxIndex := 2*i + 1
-			if 2*i+2 < k && arr[2*i+1] < arr[2*i+2] {
-				maxIndex++
-			}
-			if arr[i] < arr[maxIndex] {
-				swap(arr, i, maxIndex)
-				i = maxIndex
-			} else {
-				break
-			}
-		}
+	// 从第一个非叶子结点开始 复杂度O（n）
+	// 最后一个元素为 len(arr) - 1  父亲节点就是 (len(arr) - 1 - 1) / 2
+	for i := (len(arr) - 2) / 2; i >= 0; i-- {
+		siftDown(i, len(arr), arr)
 	}
 
-	for i := 0; i < len(arr); i++ {
-		heapInsert(arr, i)
-	}
-
-	for i := len(arr) - 1; i > 0; i-- {
+	for i := len(arr) - 1; i >= 0; i-- {
 		swap(arr, 0, i)
-		heapify(arr, 0, i)
+		siftDown(0, i, arr)
 	}
 }
 
