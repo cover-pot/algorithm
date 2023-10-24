@@ -76,6 +76,13 @@ func TestInsertionSort(t *testing.T) {
 func TestHeapSort(t *testing.T) {
 	HeapSort(arr)
 	log.Printf("TestHeapSort res: \n %v\n", arr)
+	valid := validateMax(arr)
+	assert.Equal(t, true, valid)
+}
+
+func TestMergeSort(t *testing.T) {
+	MergeSort(arr)
+	log.Printf("TestMergeSort res: \n %v\n", arr)
 	valid := validateMin(arr)
 	assert.Equal(t, true, valid)
 }
