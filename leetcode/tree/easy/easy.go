@@ -111,3 +111,17 @@ func RangeSumBST(root *tree.TreeNode, low int, high int) int {
 
 	return sum + l + r
 }
+
+// TwoSum 1. Two Sum
+func TwoSum(nums []int, target int) []int {
+	m := make(map[int]int)
+	for i, num := range nums {
+		if k, ok := m[target-num]; ok {
+			return []int{i, k}
+		} else {
+			m[num] = i
+		}
+	}
+
+	return []int{-1, -1}
+}

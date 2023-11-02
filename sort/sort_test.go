@@ -11,10 +11,12 @@ import (
 var (
 	arr    []int
 	length int
+	s      *Sort
 )
 
 func init() {
 	log.SetFormatter(&log.TextFormatter{})
+	s = new(Sort)
 	rand.NewSource(time.Now().Unix())
 	length = rand.Intn(26)
 	arr = make([]int, length)
@@ -46,42 +48,42 @@ func validateMin(arr []int) bool {
 
 func TestSelectSort(t *testing.T) {
 
-	SelectSort(arr)
+	s.SelectSort(arr)
 	log.Printf("TestSelectSort res: \n %v\n", arr)
 	valid := validateMax(arr)
 	assert.Equal(t, true, valid)
 }
 
 func TestQuickSort(t *testing.T) {
-	QuickSort(arr)
+	s.QuickSort(arr)
 	log.Printf("TestQuickSort res: \n %v\n", arr)
 	valid := validateMin(arr)
 	assert.Equal(t, true, valid)
 }
 
 func TestBubbleSort(t *testing.T) {
-	BubbleSort(arr)
+	s.BubbleSort(arr)
 	log.Printf("TestBubbleSort res: \n %v\n", arr)
 	valid := validateMax(arr)
 	assert.Equal(t, true, valid)
 }
 
 func TestInsertionSort(t *testing.T) {
-	InsertionSort(arr)
+	s.InsertionSort(arr)
 	log.Printf("TestInsertionSort res: \n %v\n", arr)
 	valid := validateMin(arr)
 	assert.Equal(t, true, valid)
 }
 
 func TestHeapSort(t *testing.T) {
-	HeapSort(arr)
+	s.HeapSort(arr)
 	log.Printf("TestHeapSort res: \n %v\n", arr)
 	valid := validateMax(arr)
 	assert.Equal(t, true, valid)
 }
 
 func TestMergeSort(t *testing.T) {
-	MergeSort(arr)
+	s.MergeSort(arr)
 	log.Printf("TestMergeSort res: \n %v\n", arr)
 	valid := validateMin(arr)
 	assert.Equal(t, true, valid)

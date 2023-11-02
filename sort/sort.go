@@ -1,13 +1,10 @@
 package sort
 
-func swap(arr []int, i, j int) {
-	tmp := arr[i]
-	arr[i] = arr[j]
-	arr[j] = tmp
+type Sort struct {
 }
 
 // SelectSort sort by select
-func SelectSort(arr []int) {
+func (*Sort) SelectSort(arr []int) {
 	for i := 0; i < len(arr)-1; i++ {
 		idx := i
 		for j := i + 1; j < len(arr); j++ {
@@ -15,27 +12,28 @@ func SelectSort(arr []int) {
 				idx = j
 			}
 		}
-		swap(arr, i, idx)
+		arr[i], arr[idx] = arr[idx], arr[i]
+		//swap(arr, i, idx)
 	}
 }
 
 // BubbleSort sort by bubble
-func BubbleSort(arr []int) {
+func (*Sort) BubbleSort(arr []int) {
 	for i := 0; i < len(arr)-1; i++ {
 		for j := i + 1; j < len(arr); j++ {
 			if arr[i] < arr[j] {
-				swap(arr, i, j)
+				arr[i], arr[j] = arr[j], arr[i]
 			}
 		}
 	}
 }
 
 // InsertionSort sort by insert
-func InsertionSort(arr []int) {
+func (*Sort) InsertionSort(arr []int) {
 	for i := 0; i < len(arr); i++ {
 		for j := i; j > 0; j-- {
 			if arr[j] < arr[j-1] {
-				swap(arr, j, j-1)
+				arr[j], arr[j-1] = arr[j-1], arr[j]
 			} else {
 				break
 			}
@@ -44,7 +42,7 @@ func InsertionSort(arr []int) {
 }
 
 // MergeSort merge
-func MergeSort(arr []int) {
+func (*Sort) MergeSort(arr []int) {
 	var merge func(l, mid, r int, arr []int)
 	var mergeSort func(l, r int, arr []int)
 
@@ -92,7 +90,7 @@ func MergeSort(arr []int) {
 // parent index = (i - 1） / 2
 // left child = 2 * i + 1
 // right child = 2 * i + 2
-func HeapSort(arr []int) {
+func (*Sort) HeapSort(arr []int) {
 
 	if len(arr) < 2 {
 		return
@@ -106,7 +104,7 @@ func HeapSort(arr []int) {
 			}
 
 			if arr[k] > arr[j] {
-				swap(arr, k, j)
+				arr[k], arr[j] = arr[j], arr[k]
 				k = j
 			} else {
 				break
@@ -121,32 +119,14 @@ func HeapSort(arr []int) {
 	}
 
 	for i := len(arr) - 1; i >= 0; i-- {
-		swap(arr, 0, i)
+		arr[0], arr[i] = arr[i], arr[0]
 		siftDown(0, i, arr)
 	}
 }
 
-// QuickSort quick
-func QuickSort(arr []int) {
+// QuickSort quick sort three ways
+func (*Sort) QuickSort(arr []int) {
 	quickSort(arr, 0, len(arr)-1)
-}
-
-func partition(arr []int, left, right int) int {
-	mid := left + (right-left)/2
-	swap(arr, left, mid)
-
-	// arr[left + 1, j] < v
-	// arr[j + 1, i] >= v
-	j := left
-	for i := left + 1; i <= right; i++ {
-		if arr[i] < arr[left] {
-			j++
-			swap(arr, i, j)
-		}
-	}
-	swap(arr, left, j)
-
-	return j
 }
 
 func quickSort(arr []int, left, right int) {
@@ -154,9 +134,36 @@ func quickSort(arr []int, left, right int) {
 		return
 	}
 
-	p := partition(arr, left, right)
+	lt, gt := partition(arr, left, right)
 
-	quickSort(arr, left, p-1)
-	quickSort(arr, p+1, right)
+	quickSort(arr, left, lt)
+	quickSort(arr, gt, right)
 
+}
+
+// arr[l+1, lt] < v
+// arr[gt, r] > v
+func partition(arr []int, left, right int) (int, int) {
+
+	mid := left + (right-left)/2
+	arr[mid], arr[left] = arr[left], arr[mid]
+
+	lt, i, gt := left, left+1, right+1
+	for i < gt {
+		// arr[i] < arr[left]
+		if arr[i] < arr[left] {
+			lt++
+			arr[i], arr[lt] = arr[lt], arr[i]
+			i++
+		} else if arr[i] > arr[left] {
+			// 扩充右边界限
+			gt--
+			arr[i], arr[gt] = arr[gt], arr[i]
+		} else {
+			// 相等
+			i++
+		}
+	}
+	arr[lt], arr[left] = arr[left], arr[lt]
+	return lt - 1, gt
 }
