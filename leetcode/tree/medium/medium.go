@@ -71,3 +71,25 @@ func FindKthLargest(nums []int, k int) int {
 
 	return nums[p]
 }
+
+// 106. 从中序与后序遍历序列构造二叉树
+func buildTree(inorder []int, postorder []int) *tree.TreeNode {
+	m := make(map[int]int, len(inorder))
+	for i, val := range inorder {
+		m[val] = i
+	}
+	var helpBuildTree func(inorder, postorder []int, il, ir, pl, pr int) *tree.TreeNode
+
+	helpBuildTree = func(inorder, postorder []int, il, ir, pl, pr int) *tree.TreeNode {
+		if il > ir {
+			return nil
+		}
+		root := &tree.TreeNode{Val: postorder[pr]}
+		r := m[root.Val]
+		root.Left = helpBuildTree(inorder, postorder, il, r-1, pl, pr+r-ir-1)
+		root.Right = helpBuildTree(inorder, postorder, r+1, ir, pr+r-ir+1, pr-1)
+		return root
+	}
+
+	return helpBuildTree(inorder, postorder, 0, len(inorder)-1, 0, len(postorder)-1)
+}

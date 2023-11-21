@@ -1,11 +1,13 @@
 package senior_datastruct
 
 import (
+	"context"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestTrie_Add(t *testing.T) {
+	context.Background()
 	trie := NewTrie()
 	trie.Add("apple")
 	assert.Equal(t, true, trie.Contains("apple"))
