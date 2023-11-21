@@ -1,12 +1,14 @@
 package medium
 
-import "github.com/cover-pot/algorithm/leetcode/tree"
+import (
+	"github.com/cover-pot/algorithm/leetcode"
+)
 
 // ConstructMaximumBinaryTree 654. Maximum Binary Tree
-func ConstructMaximumBinaryTree(nums []int) *tree.TreeNode {
-	var constructTree func([]int, int, int) *tree.TreeNode
+func ConstructMaximumBinaryTree(nums []int) *leetcode.TreeNode {
+	var constructTree func([]int, int, int) *leetcode.TreeNode
 
-	constructTree = func(nums []int, left int, right int) *tree.TreeNode {
+	constructTree = func(nums []int, left int, right int) *leetcode.TreeNode {
 		if left > right {
 			return nil
 		}
@@ -19,7 +21,7 @@ func ConstructMaximumBinaryTree(nums []int) *tree.TreeNode {
 			}
 		}
 
-		node := &tree.TreeNode{Val: nums[max]}
+		node := &leetcode.TreeNode{Val: nums[max]}
 		node.Left = constructTree(nums, left, max-1)
 		node.Right = constructTree(nums, max+1, right)
 
@@ -73,18 +75,18 @@ func FindKthLargest(nums []int, k int) int {
 }
 
 // 106. 从中序与后序遍历序列构造二叉树
-func buildTree(inorder []int, postorder []int) *tree.TreeNode {
+func buildTree(inorder []int, postorder []int) *leetcode.TreeNode {
 	m := make(map[int]int, len(inorder))
 	for i, val := range inorder {
 		m[val] = i
 	}
-	var helpBuildTree func(inorder, postorder []int, il, ir, pl, pr int) *tree.TreeNode
+	var helpBuildTree func(inorder, postorder []int, il, ir, pl, pr int) *leetcode.TreeNode
 
-	helpBuildTree = func(inorder, postorder []int, il, ir, pl, pr int) *tree.TreeNode {
+	helpBuildTree = func(inorder, postorder []int, il, ir, pl, pr int) *leetcode.TreeNode {
 		if il > ir {
 			return nil
 		}
-		root := &tree.TreeNode{Val: postorder[pr]}
+		root := &leetcode.TreeNode{Val: postorder[pr]}
 		r := m[root.Val]
 		root.Left = helpBuildTree(inorder, postorder, il, r-1, pl, pr+r-ir-1)
 		root.Right = helpBuildTree(inorder, postorder, r+1, ir, pr+r-ir+1, pr-1)
@@ -92,4 +94,76 @@ func buildTree(inorder []int, postorder []int) *tree.TreeNode {
 	}
 
 	return helpBuildTree(inorder, postorder, 0, len(inorder)-1, 0, len(postorder)-1)
+}
+
+// 2 两数相加
+// 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+//
+// 请你将两个数相加，并以相同形式返回一个表示和的链表。
+//
+// 你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+func addTwoNumbers(l1 *leetcode.ListNode, l2 *leetcode.ListNode) *leetcode.ListNode {
+	dummy := &leetcode.ListNode{Val: 0}
+	cur := dummy
+
+	carry := 0
+	for l1 != nil || l2 != nil {
+		var x, y int
+		if l1 != nil {
+			x = l1.Val
+		}
+		if l2 != nil {
+			y = l2.Val
+		}
+
+		sum := x + y + carry
+
+		carry = sum / 10
+		sum = sum % 10
+
+		cur.Next = &leetcode.ListNode{Val: sum}
+		cur = cur.Next
+		if l1 != nil {
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			l2 = l2.Next
+		}
+	}
+	if carry != 0 {
+		cur.Next = &leetcode.ListNode{Val: carry}
+	}
+	return dummy.Next
+}
+
+// 46 全排列
+// 给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
+func permute(nums []int) [][]int {
+	res := make([][]int, 0)
+	tmp := make([]int, 0, len(nums))
+	used := make([]bool, len(nums))
+	var backtrack func(nums []int, tmp []int, used []bool)
+
+	backtrack = func(nums []int, tmp []int, used []bool) {
+		if len(tmp) == len(nums) {
+			t := make([]int, len(tmp))
+			copy(t, tmp)
+			res = append(res, t)
+		}
+
+		for i := 0; i < len(nums); i++ {
+			if used[i] {
+				continue
+			}
+			tmp = append(tmp, nums[i])
+			used[i] = true
+			backtrack(nums, tmp, used)
+
+			tmp = tmp[:len(tmp)-1]
+			used[i] = false
+		}
+	}
+
+	backtrack(nums, tmp, used)
+	return res
 }
