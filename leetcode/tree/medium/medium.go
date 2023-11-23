@@ -167,3 +167,37 @@ func permute(nums []int) [][]int {
 	backtrack(nums, tmp, used)
 	return res
 }
+
+// 72 编辑距离
+// 给你两个单词 word1 和 word2， 请返回将 word1 转换成 word2 所使用的最少操作数  。
+func minDistance(word1 string, word2 string) int {
+	m, n := len(word1), len(word2)
+	dp := make([][]int, m+1)
+	for i := range dp {
+		dp[i] = make([]int, n+1)
+	}
+	for i := 1; i <= m; i++ {
+		dp[i][0] = i
+	}
+	for j := 1; j <= n; j++ {
+		dp[0][j] = j
+	}
+
+	for i := 1; i <= m; i++ {
+		for j := 1; j <= n; j++ {
+			if word1[i-1:i] == word2[j-1:j] {
+				dp[i][j] = dp[i-1][j-1]
+			} else {
+				dp[i][j] = dp[i-1][j] + 1 // 删除
+				if dp[i][j-1]+1 < dp[i][j] {
+					dp[i][j] = dp[i][j-1] + 1 // 插入
+				}
+				if dp[i-1][j-1]+1 < dp[i][j] {
+					dp[i][j] = dp[i-1][j-1] + 1 // 替换
+				}
+			}
+		}
+	}
+
+	return dp[m][n]
+}
