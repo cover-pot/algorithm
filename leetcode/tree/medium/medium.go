@@ -201,3 +201,21 @@ func minDistance(word1 string, word2 string) int {
 
 	return dp[m][n]
 }
+
+// 75 颜色分类
+func sortColors(nums []int) {
+	l, r, i := -1, len(nums), 0
+
+	for i < r {
+		if nums[i] == 0 {
+			l++
+			nums[l], nums[i] = nums[i], nums[l]
+			i++
+		} else if nums[i] == 2 {
+			r--
+			nums[r], nums[i] = nums[i], nums[r]
+		} else {
+			i++
+		}
+	}
+}
