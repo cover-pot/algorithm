@@ -219,3 +219,31 @@ func sortColors(nums []int) {
 		}
 	}
 }
+
+// 102 二叉树层序遍历
+func levelOrder(root *leetcode.TreeNode) [][]int {
+	res := make([][]int, 0)
+	if root == nil {
+		return res
+	}
+	queue := make([]*leetcode.TreeNode, 0)
+	queue = append(queue, root)
+	for len(queue) != 0 {
+		ql := len(queue)
+		tmp := make([]int, 0, ql)
+		for i := 0; i < ql; i++ {
+			cur := queue[0]
+			tmp = append(tmp, cur.Val)
+			queue = queue[1:]
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+		}
+		res = append(res, tmp)
+	}
+
+	return res
+}
