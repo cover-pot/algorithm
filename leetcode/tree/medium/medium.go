@@ -247,3 +247,137 @@ func levelOrder(root *leetcode.TreeNode) [][]int {
 
 	return res
 }
+
+// LCR 054. 把二叉搜索树转换为累加树
+// 给定一个二叉搜索树，请将它的每个节点的值替换成树中大于或者等于该节点值的所有节点值之和
+func convertBST(root *leetcode.TreeNode) *leetcode.TreeNode {
+	var convertBSTHelp func(root *leetcode.TreeNode)
+
+	res := 0
+
+	// 反中序遍历
+	convertBSTHelp = func(root *leetcode.TreeNode) {
+		if root == nil {
+			return
+		}
+		convertBSTHelp(root.Right)
+		res += root.Val
+		root.Val = res
+		convertBSTHelp(root.Left)
+	}
+	convertBSTHelp(root)
+	return root
+}
+
+// 1302. 层数最深叶子节点的和
+func deepestLeavesSum(root *leetcode.TreeNode) int {
+	// 记录每层和
+	m := make(map[int]int)
+	// 记录最大的层数
+	max := 0
+	var dfs func(root *leetcode.TreeNode, depth int)
+
+	maxFunc := func(x, y int) int {
+		if x > y {
+			return x
+		}
+		return y
+	}
+	dfs = func(root *leetcode.TreeNode, depth int) {
+		if root == nil {
+			return
+		}
+		max = maxFunc(max, depth)
+
+		if _, ok := m[depth]; !ok {
+			m[depth] = root.Val
+		} else {
+			m[depth] += root.Val
+		}
+
+		dfs(root.Left, depth+1)
+		dfs(root.Right, depth+1)
+
+	}
+	dfs(root, 0)
+
+	return m[max]
+}
+
+// 1305. 两棵二叉搜索树中的所有元素
+// 二叉树中序遍历+merge数组
+func getAllElements(root1 *leetcode.TreeNode, root2 *leetcode.TreeNode) []int {
+
+	inorder := func(root *leetcode.TreeNode) []int {
+		l := make([]int, 0)
+
+		var dfs func(root *leetcode.TreeNode)
+
+		dfs = func(root *leetcode.TreeNode) {
+			if root == nil {
+				return
+			}
+			dfs(root.Left)
+			l = append(l, root.Val)
+			dfs(root.Right)
+
+		}
+		dfs(root)
+		return l
+
+	}
+	l1 := inorder(root1)
+	l2 := inorder(root2)
+
+	res := make([]int, 0, len(l1)+len(l2))
+
+	i, j := 0, 0
+
+	for i < len(l1) || j < len(l2) {
+		if i < len(l1) && j >= len(l2) {
+			res = append(res, l1[i])
+			i++
+		} else if i >= len(l1) && j < len(l2) {
+			res = append(res, l2[j])
+			j++
+		} else {
+			if l1[i] < l2[j] {
+				res = append(res, l1[i])
+				i++
+			} else {
+				res = append(res, l2[j])
+				j++
+			}
+		}
+	}
+
+	return res
+}
+
+// 105 从前序和中序遍历构造二叉树
+func buildBSTTree(preorder []int, inorder []int) *leetcode.TreeNode {
+	m := make(map[int]int, len(inorder))
+
+	for i := 0; i < len(inorder); i++ {
+		m[inorder[i]] = i
+	}
+
+	var buildPreTree func(preorder []int, pl, pr int, inorder []int, il, ir int) *leetcode.TreeNode
+
+	buildPreTree = func(preorder []int, pl, pr int, inorder []int, il, ir int) *leetcode.TreeNode {
+		if pl > pr {
+			return nil
+		}
+		rootVal := preorder[pl]
+		root := &leetcode.TreeNode{Val: rootVal}
+
+		idx := m[rootVal]
+
+		root.Left = buildPreTree(preorder, pl+1, idx+pl-il, inorder, il, idx-1)
+		root.Right = buildPreTree(preorder, idx+pl-il+1, pr, inorder, idx+1, ir)
+
+		return root
+	}
+
+	return buildPreTree(preorder, 0, len(preorder)-1, inorder, 0, len(inorder)-1)
+}

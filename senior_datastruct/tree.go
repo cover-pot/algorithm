@@ -1,6 +1,9 @@
 package senior_datastruct
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // TreeNode BST的节点
 type TreeNode struct {
@@ -186,4 +189,44 @@ func (b *BinarySearchTree) remove(node *TreeNode, val int) *TreeNode {
 		node.Left, node.Right = nil, nil
 		return successor
 	}
+}
+
+type MultiNode struct {
+	Id  int
+	Pid int
+}
+
+type MultiTreeNode struct {
+	Node     *MultiNode
+	Children []*MultiTreeNode
+}
+
+// 构造多叉树
+func buildMultiTree(nodes []*MultiNode) (*MultiTreeNode, error) {
+	if len(nodes) == 0 {
+		return nil, nil
+	}
+
+	m := make(map[int]*MultiTreeNode)
+
+	for _, node := range nodes {
+		m[node.Id] = &MultiTreeNode{Node: node}
+	}
+
+	var root *MultiTreeNode
+
+	for _, node := range nodes {
+		curNode := m[node.Id]
+		if node.Pid == 0 {
+			root = curNode
+		} else {
+			parentNode, exist := m[node.Pid]
+			if !exist {
+				return nil, errors.New("invalid nodes")
+			}
+			parentNode.Children = append(parentNode.Children, curNode)
+		}
+	}
+
+	return root, nil
 }

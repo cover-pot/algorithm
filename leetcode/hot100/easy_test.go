@@ -1,4 +1,4 @@
-package hoot100
+package hot100
 
 import (
 	"fmt"

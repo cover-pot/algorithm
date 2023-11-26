@@ -1,6 +1,9 @@
-package hoot100
+package hot100
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 // 3、无重复最长子串
 func lengthOfLongestSubstring(s string) int {
@@ -90,6 +93,102 @@ func generateParenthesis(n int) []string {
 	}
 
 	backtrack(n, n, track)
+
+	return res
+}
+
+// 11.盛水最多的容器
+func maxArea(height []int) int {
+	i, j := 0, len(height)-1
+	res := 0
+	min := func(x, y int) int {
+		if height[x] < height[y] {
+			return x
+		}
+		return y
+	}
+	max := func(x, y int) int {
+		if x > y {
+			return x
+		}
+
+		return y
+	}
+	for i < j {
+		minVal := min(i, j)
+		res = max(res, height[minVal]*(j-i))
+		if i == minVal {
+			i++
+		}
+		if j == minVal {
+			j--
+		}
+	}
+
+	return res
+}
+
+// 34. 在排序数组中查找元素的第一个和最后一个位置
+func searchRange(nums []int, target int) []int {
+	l, r := 0, len(nums)
+	var mid int
+	for l < r {
+		mid = l + (r-l)/2
+		if nums[mid] < target {
+			l = mid
+		} else if nums[mid] > target {
+			r = mid
+		} else {
+			break
+		}
+	}
+
+	l, r = mid, mid
+
+	for l > 0 && nums[l] == target {
+		l--
+	}
+
+	for r < len(nums) && nums[r] == target {
+		r++
+	}
+
+	return []int{l + 1, r - 1}
+}
+
+type Node struct {
+	Id  int
+	Pid int
+}
+
+// 39、组合总数
+func combinationSum(candidates []int, target int) [][]int {
+	sort.Ints(candidates)
+
+	res := make([][]int, 0)
+	var backtrack func([]int, int, int, []int)
+
+	backtrack = func(cand []int, begin, target int, tmp []int) {
+		if target < 0 {
+			return
+		}
+		if target == 0 {
+			t := make([]int, len(tmp))
+			copy(t, tmp)
+			res = append(res, t)
+			return
+		}
+
+		for i := begin; i < len(cand); i++ {
+			tmp = append(tmp, cand[i])
+
+			backtrack(cand, i, target-candidates[i], tmp)
+
+			tmp = tmp[:len(tmp)-1]
+
+		}
+	}
+	backtrack(candidates, 0, target, []int{})
 
 	return res
 }
