@@ -488,3 +488,32 @@ func sumNumbers(root *leetcode.TreeNode) int {
 
 	return sumTree(root, 0)
 }
+
+// 199 二叉树的右视图
+func rightSideView(root *leetcode.TreeNode) []int {
+	res := make([]int, 0)
+	if root == nil {
+		return res
+	}
+	queue := make([]*leetcode.TreeNode, 0)
+	queue = append(queue, root)
+
+	for len(queue) != 0 {
+		ql := len(queue)
+
+		for i := 0; i < ql; i++ {
+			cur := queue[0]
+			queue = queue[1:]
+			if i == ql-1 {
+				res = append(res, cur.Val)
+			}
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+		}
+	}
+	return res
+}

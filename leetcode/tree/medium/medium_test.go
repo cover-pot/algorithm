@@ -27,3 +27,20 @@ func Test_sumNumbers(t *testing.T) {
 	res := sumNumbers(root)
 	assert.Equal(t, res, 25)
 }
+
+func Test_rightSideView(t *testing.T) {
+	root := &leetcode.TreeNode{
+		Val: 1,
+		Left: &leetcode.TreeNode{
+			Val:   2,
+			Right: &leetcode.TreeNode{Val: 5},
+		},
+		Right: &leetcode.TreeNode{
+			Val:   3,
+			Right: &leetcode.TreeNode{Val: 4},
+		},
+	}
+
+	res := rightSideView(root)
+	fmt.Println(res)
+}
