@@ -381,3 +381,72 @@ func buildBSTTree(preorder []int, inorder []int) *leetcode.TreeNode {
 
 	return buildPreTree(preorder, 0, len(preorder)-1, inorder, 0, len(inorder)-1)
 }
+
+// 107. 二叉树的层序遍历 II
+func levelOrderBottom(root *leetcode.TreeNode) [][]int {
+	res := make([][]int, 0)
+
+	if root == nil {
+		return res
+	}
+
+	queue := make([]*leetcode.TreeNode, 0)
+	queue = append(queue, root)
+
+	for len(queue) != 0 {
+		ql := len(queue)
+
+		tmp := make([]int, 0, ql)
+		for i := 0; i < ql; i++ {
+			cur := queue[0]
+			queue = queue[1:]
+			tmp = append(tmp, cur.Val)
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+		}
+		res = append(res, tmp)
+	}
+
+	i, j := 0, len(res)-1
+	for i < j {
+		res[i], res[j] = res[j], res[i]
+		i++
+		j--
+	}
+	return res
+}
+
+// 109 将有序链表转换为一个BST
+func sortedListToBST(head *leetcode.ListNode) *leetcode.TreeNode {
+	if head == nil {
+		return nil
+	}
+	length := 0
+	root := head
+	for head != nil {
+		length++
+		head = head.Next
+	}
+
+	var buildBST func(start, end int) *leetcode.TreeNode
+
+	buildBST = func(start, end int) *leetcode.TreeNode {
+		if start > end {
+			return nil
+		}
+		mid := start + (end-start)/2
+		left := buildBST(start, mid-1)
+		r := &leetcode.TreeNode{Val: root.Val}
+		root = root.Next
+		r.Left = left
+		r.Right = buildBST(mid+1, end)
+		return r
+	}
+
+	return buildBST(0, length-1)
+
+}
