@@ -450,3 +450,21 @@ func sortedListToBST(head *leetcode.ListNode) *leetcode.TreeNode {
 	return buildBST(0, length-1)
 
 }
+
+// 114 二叉树展开为链表
+func flatten(root *leetcode.TreeNode) {
+
+	cur := root
+	for cur != nil {
+		if cur.Left != nil {
+			next := cur.Left
+			pre := next
+			for pre.Right != nil {
+				pre = pre.Right
+			}
+			pre.Right = cur.Right
+			cur.Left, cur.Right = nil, next
+		}
+		cur = cur.Right
+	}
+}
