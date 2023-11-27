@@ -468,3 +468,23 @@ func flatten(root *leetcode.TreeNode) {
 		cur = cur.Right
 	}
 }
+
+// 129 求根节点到叶节点的数字只喝
+func sumNumbers(root *leetcode.TreeNode) int {
+
+	var sumTree func(node *leetcode.TreeNode, preSum int) int
+
+	sumTree = func(node *leetcode.TreeNode, preSum int) int {
+		if node == nil {
+			return 0
+		}
+		sum := preSum*10 + node.Val
+		if node.Left == nil && node.Right == nil {
+			return sum
+		}
+
+		return sumTree(node.Left, sum) + sumTree(node.Right, sum)
+	}
+
+	return sumTree(root, 0)
+}
