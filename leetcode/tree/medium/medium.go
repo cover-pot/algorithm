@@ -517,3 +517,35 @@ func rightSideView(root *leetcode.TreeNode) []int {
 	}
 	return res
 }
+
+// 113 路径总和 II
+func pathSum(root *leetcode.TreeNode, targetSum int) [][]int {
+	res := make([][]int, 0)
+
+	var dfs func(root *leetcode.TreeNode, targetSum int, tmp []int)
+
+	dfs = func(root *leetcode.TreeNode, targetSum int, tmp []int) {
+		if root == nil {
+			return
+		}
+		tmp = append(tmp, root.Val)
+		targetSum -= root.Val
+
+		if targetSum == 0 && root.Left == nil && root.Right == nil {
+			t := make([]int, len(tmp))
+			copy(t, tmp)
+			res = append(res, t)
+			return
+		}
+
+		dfs(root.Left, targetSum, tmp)
+		dfs(root.Right, targetSum, tmp)
+
+		tmp = tmp[:len(tmp)-1]
+		targetSum += root.Val
+	}
+
+	dfs(root, targetSum, []int{})
+
+	return res
+}

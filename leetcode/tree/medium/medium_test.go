@@ -43,4 +43,11 @@ func Test_rightSideView(t *testing.T) {
 
 	res := rightSideView(root)
 	fmt.Println(res)
+
+	tmp := []int{1, 2, 3}
+
+	tt := make([]int, len(tmp))
+	copy(tt, tmp)
+	fmt.Println(tmp)
+	fmt.Println(tt)
 }
