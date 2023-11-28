@@ -549,3 +549,69 @@ func pathSum(root *leetcode.TreeNode, targetSum int) [][]int {
 
 	return res
 }
+
+// Node 116. 填充每个节点的下一个右侧节点指针
+type Node struct {
+	Val   int
+	Left  *Node
+	Right *Node
+	Next  *Node
+}
+
+func connect(root *Node) *Node {
+	cur := root
+	if cur == nil {
+		return cur
+	}
+
+	queue := make([]*Node, 0)
+	queue = append(queue, cur)
+
+	for len(queue) != 0 {
+		ql := len(queue)
+		var pre *Node
+		for i := 0; i < ql; i++ {
+			cur = queue[0]
+			queue = queue[1:]
+			if i == 0 {
+				pre = cur
+			} else {
+				pre.Next = cur
+				pre = cur
+			}
+
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+		}
+	}
+	return root
+}
+
+// 230 二叉树中第k小的元素
+func kthSmallest(root *leetcode.TreeNode, k int) int {
+	res := 0
+
+	var unInorder func(root *leetcode.TreeNode)
+
+	unInorder = func(root *leetcode.TreeNode) {
+		if root == nil {
+			return
+		}
+
+		unInorder(root.Left)
+		if k > 0 {
+			res = root.Val
+			k--
+		}
+		unInorder(root.Right)
+
+	}
+
+	unInorder(root)
+
+	return res
+}
