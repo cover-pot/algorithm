@@ -51,3 +51,27 @@ func Test_rightSideView(t *testing.T) {
 	fmt.Println(tmp)
 	fmt.Println(tt)
 }
+
+func Test_lowestCommonAncestor(t *testing.T) {
+	root := &leetcode.TreeNode{
+		Val: 6,
+		Left: &leetcode.TreeNode{
+			Val:  2,
+			Left: &leetcode.TreeNode{Val: 0},
+			Right: &leetcode.TreeNode{
+				Val:   4,
+				Left:  &leetcode.TreeNode{Val: 3},
+				Right: &leetcode.TreeNode{Val: 5},
+			},
+		},
+		Right: &leetcode.TreeNode{
+			Val:   8,
+			Left:  &leetcode.TreeNode{Val: 7},
+			Right: &leetcode.TreeNode{Val: 9},
+		},
+	}
+	p := &leetcode.TreeNode{Val: 2}
+	q := &leetcode.TreeNode{Val: 8}
+	ancestor := lowestCommonAncestor(root, p, q)
+	fmt.Println(ancestor.Val)
+}
