@@ -699,3 +699,32 @@ func deleteNode(root *leetcode.TreeNode, key int) *leetcode.TreeNode {
 		}
 	}
 }
+
+// 513. 找树左下角的值
+func findBottomLeftValue(root *leetcode.TreeNode) int {
+	var res int
+	queue := make([]*leetcode.TreeNode, 0)
+	if root == nil {
+		return res
+	}
+	queue = append(queue, root)
+
+	for len(queue) != 0 {
+		ql := len(queue)
+		for i := 0; i < ql; i++ {
+			cur := queue[0]
+			queue = queue[1:]
+			if i == 0 {
+				res = cur.Val
+			}
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+		}
+	}
+
+	return res
+}
