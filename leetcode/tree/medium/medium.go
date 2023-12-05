@@ -728,3 +728,37 @@ func findBottomLeftValue(root *leetcode.TreeNode) int {
 
 	return res
 }
+
+// 515. 在每个树行中找最大值
+func largestValues(root *leetcode.TreeNode) []int {
+	res := make([]int, 0)
+	queue := make([]*leetcode.TreeNode, 0)
+	if root == nil {
+		return res
+	}
+	queue = append(queue, root)
+
+	for len(queue) != 0 {
+		ql := len(queue)
+		var maxVal int
+		for i := 0; i < ql; i++ {
+			cur := queue[0]
+			queue = queue[1:]
+			if i == 0 {
+				maxVal = cur.Val
+			} else if maxVal < cur.Val {
+				maxVal = cur.Val
+			}
+
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+		}
+		res = append(res, maxVal)
+	}
+
+	return res
+}
