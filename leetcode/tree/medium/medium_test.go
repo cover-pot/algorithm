@@ -75,3 +75,15 @@ func Test_lowestCommonAncestor(t *testing.T) {
 	ancestor := lowestCommonAncestor(root, p, q)
 	fmt.Println(ancestor.Val)
 }
+
+func TestSlice(t *testing.T) {
+	a := make([]int, 0, 2)
+	b := append(a, 1)
+	fmt.Println(a, len(a), cap(a))
+	fmt.Println(b, len(b), cap(b))
+	c := append(a, 2)
+
+	fmt.Println(a, len(a), cap(a))
+	fmt.Println(b, len(b), cap(b))
+	fmt.Println(c, len(c), cap(c))
+}
