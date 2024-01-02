@@ -615,3 +615,150 @@ func kthSmallest(root *leetcode.TreeNode, k int) int {
 
 	return res
 }
+
+// 235 二叉搜索树的最近公共祖先
+func lowestCommonAncestor(root, p, q *leetcode.TreeNode) *leetcode.TreeNode {
+	for ((root.Val - p.Val) * (root.Val - q.Val)) > 0 {
+		if q.Val < root.Val {
+			root = root.Left
+		} else {
+			root = root.Right
+		}
+	}
+	return root
+}
+
+// 235 二叉树的最近公共祖先
+func lowestCommonBSTAncestor(root, p, q *leetcode.TreeNode) *leetcode.TreeNode {
+	if root == nil || root == p || root == q {
+		return root
+	}
+
+	left := lowestCommonBSTAncestor(root.Left, p, q)
+	right := lowestCommonBSTAncestor(root.Right, p, q)
+
+	if left == nil {
+		return right
+	}
+
+	if right == nil {
+		return left
+	}
+
+	return root
+}
+
+// 450 删除二叉搜索树的节点
+func minimum(node *leetcode.TreeNode) *leetcode.TreeNode {
+	if node.Left == nil {
+		return node
+	}
+	return minimum(node.Left)
+}
+
+func removeMin(node *leetcode.TreeNode) *leetcode.TreeNode {
+
+	if node.Left == nil {
+		rightNode := node.Right
+		node.Right = nil
+		return rightNode
+	}
+	node.Left = removeMin(node.Left)
+	return node
+
+}
+func deleteNode(root *leetcode.TreeNode, key int) *leetcode.TreeNode {
+	if root == nil {
+		return root
+	}
+
+	if root.Val > key {
+		root.Left = deleteNode(root.Left, key)
+		return root
+	} else if root.Val < key {
+		root.Right = deleteNode(root.Right, key)
+		return root
+	} else {
+		// 找到对应节点
+		if root.Left == nil {
+			rightNode := root.Right
+			root.Right = nil
+			return rightNode
+		} else if root.Right == nil {
+			leftNode := root.Left
+			root.Left = nil
+			return leftNode
+		} else {
+			// 后继节点 即右子树的最小节点
+			successor := minimum(root.Right)
+			successor.Right = removeMin(root.Right)
+			successor.Left = root.Left
+
+			root.Left, root.Right = nil, nil
+			return successor
+		}
+	}
+}
+
+// 513. 找树左下角的值
+func findBottomLeftValue(root *leetcode.TreeNode) int {
+	var res int
+	queue := make([]*leetcode.TreeNode, 0)
+	if root == nil {
+		return res
+	}
+	queue = append(queue, root)
+
+	for len(queue) != 0 {
+		ql := len(queue)
+		for i := 0; i < ql; i++ {
+			cur := queue[0]
+			queue = queue[1:]
+			if i == 0 {
+				res = cur.Val
+			}
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+		}
+	}
+
+	return res
+}
+
+// 515. 在每个树行中找最大值
+func largestValues(root *leetcode.TreeNode) []int {
+	res := make([]int, 0)
+	queue := make([]*leetcode.TreeNode, 0)
+	if root == nil {
+		return res
+	}
+	queue = append(queue, root)
+
+	for len(queue) != 0 {
+		ql := len(queue)
+		var maxVal int
+		for i := 0; i < ql; i++ {
+			cur := queue[0]
+			queue = queue[1:]
+			if i == 0 {
+				maxVal = cur.Val
+			} else if maxVal < cur.Val {
+				maxVal = cur.Val
+			}
+
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+		}
+		res = append(res, maxVal)
+	}
+
+	return res
+}

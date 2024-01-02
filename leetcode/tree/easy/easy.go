@@ -1,13 +1,15 @@
 package easy
 
-import "github.com/cover-pot/algorithm/leetcode/tree"
+import (
+	"github.com/cover-pot/algorithm/leetcode"
+)
 
 // PreorderTraversal
 // 144. Binary Tree Preorder Traversal
-func PreorderTraversal(root *tree.TreeNode) []int {
+func PreorderTraversal(root *leetcode.TreeNode) []int {
 	res := make([]int, 0)
-	var preorderHelp func(root *tree.TreeNode)
-	preorderHelp = func(root *tree.TreeNode) {
+	var preorderHelp func(root *leetcode.TreeNode)
+	preorderHelp = func(root *leetcode.TreeNode) {
 		if root == nil {
 			return
 		}
@@ -23,10 +25,10 @@ func PreorderTraversal(root *tree.TreeNode) []int {
 
 // InorderTraversal
 // 94. Binary Tree Inorder Traversal
-func InorderTraversal(root *tree.TreeNode) []int {
+func InorderTraversal(root *leetcode.TreeNode) []int {
 	res := make([]int, 0)
-	var inorderHelp func(root *tree.TreeNode)
-	inorderHelp = func(root *tree.TreeNode) {
+	var inorderHelp func(root *leetcode.TreeNode)
+	inorderHelp = func(root *leetcode.TreeNode) {
 		if root == nil {
 			return
 		}
@@ -42,10 +44,10 @@ func InorderTraversal(root *tree.TreeNode) []int {
 
 // PostorderTraversal
 // 145. Binary Tree Postorder Traversal
-func PostorderTraversal(root *tree.TreeNode) []int {
+func PostorderTraversal(root *leetcode.TreeNode) []int {
 	res := make([]int, 0)
-	var postorderHelp func(root *tree.TreeNode)
-	postorderHelp = func(root *tree.TreeNode) {
+	var postorderHelp func(root *leetcode.TreeNode)
+	postorderHelp = func(root *leetcode.TreeNode) {
 		if root == nil {
 			return
 		}
@@ -60,12 +62,12 @@ func PostorderTraversal(root *tree.TreeNode) []int {
 }
 
 // CheckTree 2236. Root Equals Sum of Children
-func CheckTree(root *tree.TreeNode) bool {
+func CheckTree(root *leetcode.TreeNode) bool {
 	return root.Val == root.Left.Val+root.Right.Val
 }
 
 // RangeSumBST 938. Range Sum of BST
-func RangeSumBST(root *tree.TreeNode, low int, high int) int {
+func RangeSumBST(root *leetcode.TreeNode, low int, high int) int {
 	//var inorderSum func(*tree.TreeNode, int, int)
 	//
 	//sum := 0
