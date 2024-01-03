@@ -50,3 +50,25 @@ func removeElement(nums []int, val int) int {
 
 	return r + 1
 }
+
+/*
+*26. 删除有序数组中的重复项
+ */
+func removeDuplicates(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	l, idx := 0, 1
+
+	for idx < len(nums) {
+		// 不相等交换
+		if nums[l] != nums[idx] {
+			nums[l+1] = nums[idx]
+			l++
+		}
+		// 右侧指针移动
+		idx++
+	}
+
+	return l + 1
+}
