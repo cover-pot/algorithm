@@ -72,3 +72,25 @@ func removeDuplicates(nums []int) int {
 
 	return l + 1
 }
+
+/*
+*169. 多数元素 摩尔投票
+ */
+func majorityElement(nums []int) int {
+	candidateNum, candidate := nums[0], 1
+
+	for i := 1; i < len(nums); i++ {
+		if nums[i] == candidateNum {
+			candidate++
+		} else {
+			candidate--
+		}
+
+		if candidate == 0 {
+			candidateNum = nums[i]
+			candidate = 1
+		}
+	}
+
+	return candidateNum
+}
